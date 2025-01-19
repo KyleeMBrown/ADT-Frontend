@@ -3,7 +3,7 @@ import Navigation from '../Components/Home/Navigation'
 
 export const Home = () => {
   return (
-    <div className="w-full bg-[url('public/Images/pexels-zaktech90-9209812.jpg')] bg-center bg-cover h-full items-center font-mono justify-center">
+    <div className="w-full bg-[url('/Images/pexels-zaktech90-9209812.jpg')] bg-center bg-cover h-full items-center font-mono justify-center">
       <Navigation></Navigation>
       <div className="w-full flex justify-center items-center flex-col  h-full">
         
