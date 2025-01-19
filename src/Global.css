@@ -1,0 +1,20 @@
+/* TAILWIND */
+
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* TAILWIND */
+
+body,html,#root{
+  width:100%;
+  height:100%;
+}
+
+.home-gradient{
+  background: rgb(32,76,91);
+background: -moz-linear-gradient(187deg, rgba(32,76,91,1) 0%, rgba(31,44,48,1) 71%);
+background: -webkit-linear-gradient(187deg, rgba(32,76,91,1) 0%, rgba(31,44,48,1) 71%);
+background: linear-gradient(187deg, rgba(32,76,91,1) 0%, rgba(31,44,48,1) 71%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#204c5b",endColorstr="#1f2c30",GradientType=1);
+}
