@@ -8,7 +8,7 @@ export const Navigation = () => {
        
         <div className="">
         <Link  to="/signup" className="mr-[1em] text-gray-800 hover:text-yellow-600 p-[0.5em] bg-white rounded-lg">SignUp</Link>
-        <Link to="/" className="hover:text-yellow-600">SignIn</Link>
+        <Link to="/signin" className="hover:text-yellow-600">SignIn</Link>
         </div>
         
     </div>
