@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-route
 import { Home } from './Pages/Home';
 import { SignUp } from './Pages/SignUp';
 import { SignIn } from './Pages/SignIn';
-import Dashboard from './Pages/Dashboard';
+import { Dashboard } from './Pages/Dashboard';
 
 function App() {
   

@@ -1,4 +1,5 @@
 import {React, useState} from 'react'
+import { useNavigate } from 'react-router-dom';
 import Input from '../Components/SignUp/Input'
 import axios from 'axios';
 
@@ -12,6 +13,7 @@ export const SignUp =() => {
   const [userExistsMessage, setUserExistsMessage] = useState()
   const [successMess, setSuccessMess] = useState()
 
+  const nav = useNavigate()
   // check if user Exists
   const checkIfUserexists = async(email) =>{
     try{
@@ -21,6 +23,7 @@ export const SignUp =() => {
       return data;
     }catch(error){
       console.log(error)
+      
       setUserExistsMessage(error.response.data.message)
     }
   }
@@ -36,7 +39,8 @@ export const SignUp =() => {
           password:password
         })
         console.log(data)
-        setSuccessMess(`Sign Up Successful! - Check ${email} for your verification link`)
+        nav('/signin')
+        //setSuccessMess(`Sign Up Successful! - Check ${email} for your verification link`)
       }else{
         console.log("error")
       }
