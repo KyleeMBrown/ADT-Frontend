@@ -2,6 +2,8 @@ import {React, useState, useEffect, useRef} from 'react'
 import { useNavigate } from 'react-router-dom'
 import supabase from '../supabaseClient'
 import axios from 'axios'
+import { MyImages } from '../Components/myImages'
+
 
 const url = import.meta.env.VITE_API_URL;
 
@@ -13,8 +15,9 @@ export const Dashboard = () => {
   const [loading, setLoading] = useState(false)
   const [errorModal, setErrorModal] = useState("none")
   const [fileClicked, setFileClicked] = useState(false)
-
+  const [currentFile, setCurrentFile] = useState()
   const [userFiles, setUserFiles] = useState()
+  const [paths,setPaths] = useState()
 
   // AUTHENTICATE AND GRAB SESSION
   useEffect(()=>{
@@ -90,22 +93,42 @@ export const Dashboard = () => {
     setLoading(false)
     fileInput.current.value = null
   }
-  const [currentFile, setCurrentFile] = useState()
+
+  // GENERATE IMAGES
+  const generateImages = async() =>{
+    try{
+      console.log(currentFile)
+      
+      const response = await axios.post(`${url}/upload/images/${userId}`, {
+        "name":currentFile.name
+      })
+      setPaths(response.data.paths)
+      console.log(response)
+    }catch(error){
+      console.log(error)
+    }
+  }
+  
   return (
     <div className="w-full h-full home-gradient flex items-center justify-center">
       {/* Dashboard */}
-      <div className="w-[75%] h-[85%] border rounded-md rounded-tr-none rounded-br-none">
+      <div className="w-[75%] h-[85%] p-[1em] border rounded-md rounded-tr-none rounded-br-none">
+        <div className="w-full h-full gap-[1em] flex items-center justify-center">
+          {paths ? paths.map((path, index) => (
+            <img className="w-[30%]" index ={index} src={path}></img>
+          )) : <p>No images</p>}
+        </div>
         {/* OPTIONS DISPLAY POPUP */}
-        <div style={{height:(fileClicked) ? "25%" : "0", transition:"ease all 0.3s"}} className="w-[75%] absolute bottom-[7.5%] flex flex-col justify-center items-center border rounded-br-none rounded-bl-md">
+        <div style={{height:(fileClicked) ? "25%" : "0", transition:"ease all 0.3s"}} className="w-[75%] left-[2.5%] absolute bottom-[7.5%] flex flex-col justify-center items-center border rounded-br-none rounded-bl-md">
           <center onClick={()=>{setFileClicked(false)}} style={{display:(fileClicked) ? "block" : "none"}} className="rotate-180 h-[10%]"><p className="w-[2%] items-center justify-center text-white hover:cursor-pointer pl-[0.5em] pr-[0.5em] hover:scale-[103%] active:scale-100">^</p></center>
           <h3 style={{display:(fileClicked) ? "block" : "none"}} className="font-mono ml-[1em] text-white text-left w-full">{currentFile ? `${currentFile.name}:` : "no file selected"}</h3>
           <div style={{display:(fileClicked) ? "flex" : "none"}} className="w-full h-full flex items-center justify-start p-[1em]">
-            <button className="font-mono p-[1em] w-[30%] text-white border rounded-md hover:scale-105 active:scale-100">Generate Images</button>
+            <button onClick={generateImages} className="font-mono p-[1em] w-[30%] text-white border rounded-md hover:scale-105 active:scale-100">Generate Images</button>
           </div>
         </div>
       </div>
       {/* Right side file box */}
-      <div className="rounded-tr-md rounded-br-md border w-[20%] border-l-0 h-[80%]">
+      <div className="rounded-tr-md rounded-br-md border w-[20%] border-l-0 h-[80%] overflow-y-scroll">
         {/* My Files */}
         <div className="w-full p-[5px] flex items-center justify-start flex-col h-[90%]">
           <h1 className="p-[0.5em] border w-full font-mono text-center mb-[1em] rounded-[5px] text-white">File Explorer</h1>
@@ -117,10 +140,11 @@ export const Dashboard = () => {
             (<div className="w-full h-full flex items-center justify-center"><p className ="loader"></p></div>)
             }
             {/*<p className="w-full bg-white h-[1em] mb-[5px] flex items-center text-[0.8em] font-mono justify-start p-[1em]">Sample-file</p>*/}
-            
-            
           </div>
+          <MyImages name ="My Images:"></MyImages>
+            
         </div>
+        
         {/* Choose A file */}
         <div className="w-full h-[10%] rounded-br-md flex items-center justify-center">
           <input 
