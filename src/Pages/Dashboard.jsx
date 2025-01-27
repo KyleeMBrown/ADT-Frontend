@@ -141,8 +141,8 @@ export const Dashboard = () => {
             }
             {/*<p className="w-full bg-white h-[1em] mb-[5px] flex items-center text-[0.8em] font-mono justify-start p-[1em]">Sample-file</p>*/}
           </div>
-          <MyImages name ="My Images:"></MyImages>
-            
+          <MyImages name ="My Images:" ></MyImages>
+          
         </div>
         
         {/* Choose A file */}
