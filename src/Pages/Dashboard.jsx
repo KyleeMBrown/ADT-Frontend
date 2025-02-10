@@ -211,7 +211,7 @@ export const Dashboard = () => {
           <h3 className=" w-full text-left mb-[5px] text-white font-mono text-[10px]">My files:</h3>
           <div className="w-full h-[25%] border rouned-md overflow-y-scroll overflow-x-hidden">
             {(userFiles) ? (userFiles.map((file, index) => (
-              (file['name'] !== ".emptyFolderPlaceholder") ? (<p key={index} onClick={()=>{setFileClicked(true), setCurrentFile(file)}} className="w-full bg-white max-[500px]:flex-wrap max-[500px]:h-auto  file-home-gradient hover:cursor-pointer border h-[1em] mb-[5px] flex items-center text-[0.6em] font-mono justify-between p-[1em]">{file['name']}<h1 className="font-mono font-extrabold text-red-800 pl-[5px] pr-[5px] rounded-[5px] bg-white hover:scale-105 flex items-center justify-center" onClick={() =>{setDeleteFileModal(true)}}>X</h1></p>) : null
+              (file['name'] !== ".emptyFolderPlaceholder") ? (<div key={index} onClick={()=>{setFileClicked(true), setCurrentFile(file)}} className="w-full bg-white max-[500px]:flex-wrap max-[500px]:h-auto  file-home-gradient hover:cursor-pointer border h-[1em] mb-[5px] flex items-center text-[0.6em] font-mono justify-between p-[1em]">{file['name']}<p className="font-mono font-extrabold text-red-800 pl-[5px] pr-[5px] rounded-[5px] bg-white hover:scale-105 flex items-center justify-center" onClick={() =>{setDeleteFileModal(true)}}>X</p></div>) : null
             ))) :
             (<div className="w-full h-full flex items-center justify-center"><p className ="loader"></p></div>)
             }
