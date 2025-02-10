@@ -7,8 +7,8 @@ export const Home = () => {
       <Navigation></Navigation>
       <div className="w-full flex justify-center items-center flex-col  h-full">
         
-        <div className="w-[65%] p-[5em] backdrop-blur-sm border border-gray-500">
-          <div className="text-left home-gradient p-[2em] rounded-[5px] text-white">
+        <div className="w-[65%] flex items-center justify-center p-[5em] max-[500px]:p-0 max-[500px]:w-[90%] backdrop-blur-sm max-[500px]:h-[50%] border border-gray-500">
+          <div className="text-left home-gradient p-[2em] max-[500px]:w-[85%] max-[500px]:h-[90%] max-[500px]:text-[12px] rounded-[5px] text-white">
             <h1 className="text-[2em]">Welcome to the Astronomy Data Tool (ADT)</h1>
             <br></br>
             <h2 className="text-[1.2em]">Developers:</h2>

@@ -66,7 +66,7 @@ export const SignUp =() => {
 
   return (
     <div className="w-full h-full bg-cover bg-center flex items-center justify-center bg-[url('/Images/pexels-zaktech90-9209812.jpg')]">
-        <div className="w-[40%] home-gradient shadow-lg h-auto rounded-[5px] bg-blue-300 flex flex-col items-center justify-center">
+        <div className="w-[40%] home-gradient max-[500px]:w-[85%] shadow-lg h-auto rounded-[5px] bg-blue-300 flex flex-col items-center justify-center">
             <h1 className="text-white font-mono pt-[1em] text-[1.5em]">SignUp</h1>
             <br></br>
             <input onClick={()=>{setUserExistsMessage("")}} value={fullName || ''} onChange={(e)=>{setFullName(e.target.value)}} placeholder="Full Name" className="h-[2.5em] rounded-md pl-[0.5em] text-[0.8em] font-mono w-[80%] placeholder:text-white text-white border-white border-[1px] bg-transparent p-[0.3em] outline-none" type="text"></input>
@@ -79,6 +79,8 @@ export const SignUp =() => {
             <br></br>
             
             <button onClick={signUp} className="text-white p-[0.5em] rounded-[5px] bg-transparent border">SignUp</button>
+            <br></br>
+            <a href="/signin/" className="text-center underline text-white">Already have an account?<br></br>signin</a>
             <br></br>
             <p className='text-red-600 font-mono p-[0.5em]'>{userExistsMessage}</p>
             <p className='text-green-600 font-mono text-[0.8em] text-center pb-[0.5em]'>{successMess}</p>

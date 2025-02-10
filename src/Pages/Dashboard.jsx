@@ -3,9 +3,22 @@ import { useNavigate } from 'react-router-dom'
 import supabase from '../supabaseClient'
 import axios from 'axios'
 import { MyImages } from '../Components/myImages'
+import { DeleteModal } from '../Components/DeleteModal'
 
 
 const url = import.meta.env.VITE_API_URL;
+
+  // GET Images
+  const getImages = async(id) =>{
+    try{
+      const response = axios.get(`${url}/images/${id}`)
+      
+      console.log(response)
+      return response;
+    }catch(err){
+      console.log(err)
+    }
+  }
 
 export const Dashboard = () => {
   const fileInput = useRef()
@@ -19,7 +32,18 @@ export const Dashboard = () => {
   const [userFiles, setUserFiles] = useState()
   const [paths,setPaths] = useState()
 
-  // AUTHENTICATE AND GRAB SESSION
+  const [imageNames, setImageNames] = useState()
+  const [folderNames, setFolderNames] = useState()
+  const [imagePaths, setImagePaths] = useState()
+  const [imageResponse, setImageResponse] = useState()
+  const [imgPath, setImgPath] = useState()
+  const [showPreview, setShowPreview] = useState()
+
+  const [errorImage, setErrorImage] = useState()
+  const [loadImage, setLoadImage] = useState(false)
+  const [deleteFileModal, setDeleteFileModal] = useState(false)
+  
+  // AUTHENTICATE AND GRAB SESSION -- on page load
   useEffect(()=>{
     const fetch = async() => {
       const { data: { session }, error } = await supabase.auth.getSession();
@@ -33,6 +57,20 @@ export const Dashboard = () => {
     
   }, [])
 
+  // SIGN OUT
+  const signOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+        console.error("Error signing out:", error.message);
+    } else {
+        console.log("User signed out successfully.");
+        nav('/signin')
+    }
+  }
+
+  
+
+  // GET files function
   const getFiles = async(id) => {
       try{
         //console.log(id)
@@ -48,6 +86,29 @@ export const Dashboard = () => {
       }
   }
 
+
+  const retrieveImages = async(id) =>{
+    try{
+      if (id){
+        const response = await getImages(id)
+        console.log(response)
+        setImageResponse(response)
+        setImageNames(response.data.imageNames)
+        setFolderNames(response.data.folderNames)
+        setImagePaths(response.data.paths)
+        
+      }
+      
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+  useEffect(()=>{
+    retrieveImages(userId)
+  }, [userId])
+
+  // GET Files -- on page load
   useEffect(()=>{
     const retrieveFiles = async(id) => {
       try{
@@ -60,18 +121,9 @@ export const Dashboard = () => {
     retrieveFiles(userId)
   }, [userId])
 
-// SIGN OUT
-  const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-        console.error("Error signing out:", error.message);
-    } else {
-        console.log("User signed out successfully.");
-        nav('/signin')
-    }
-  }
+
   
-  // UPLOAD FITS FILE TO SUPABASE
+  // UPLOAD FITS FILE TO SUPABASE -- on change
   const uploadFile = async(file, userId) =>{
     const formData = new FormData();
     formData.append('file', file); // Ensure `file` is a File object or Blob
@@ -94,19 +146,35 @@ export const Dashboard = () => {
     fileInput.current.value = null
   }
 
-  // GENERATE IMAGES
+  // Display images
+  const displayImage = (path) =>{
+    setImgPath(path)
+  }
+
+  // GENERATE IMAGES - on click
   const generateImages = async() =>{
     try{
-      console.log(currentFile)
-      
+      setErrorImage(null)
+      setPaths(null)
+      setShowPreview(false)
+      setLoadImage(true)
       const response = await axios.post(`${url}/upload/images/${userId}`, {
         "name":currentFile.name
       })
+      setLoadImage(false)
       setPaths(response.data.paths)
-      console.log(response)
+      setShowPreview(false)
+      retrieveImages(userId)
+      //console.log(response)
     }catch(error){
+      setLoadImage(false)
       console.log(error)
+      setErrorImage("Error file has no images")
     }
+  }
+
+  const setPreview = () =>{
+    setShowPreview(true)
   }
   
   return (
@@ -114,12 +182,20 @@ export const Dashboard = () => {
       {/* Dashboard */}
       <div className="w-[75%] h-[85%] p-[1em] border rounded-md rounded-tr-none rounded-br-none">
         <div className="w-full h-full gap-[1em] flex items-center justify-center">
-          {paths ? paths.map((path, index) => (
+          {paths && !showPreview ? paths.map((path, index) => (
             <img className="w-[30%]" index ={index} src={path}></img>
-          )) : <p>No images</p>}
+          )) :<p className="text-red-600 font-bold font-mono">{errorImage}</p>}
+          {loadImage ? (<div className="loader"></div>):null}
+          {imgPath && showPreview ? 
+          (<div className="flex flex-col justify-center align-center">
+            {/*<center className="mb-[2em]"><a href={imgPath} target="_blank" className="file-home-gradient bg-white p-[0.5em] hover:text- text-[rgb(32,76,91)] border bg-transparent text-center w-[25%] ">Open</a></center>*/}
+            <img src={imgPath}></img> 
+            
+          </div>)
+          : null}
         </div>
         {/* OPTIONS DISPLAY POPUP */}
-        <div style={{height:(fileClicked) ? "25%" : "0", transition:"ease all 0.3s"}} className="w-[75%] left-[2.5%] absolute bottom-[7.5%] flex flex-col justify-center items-center border rounded-br-none rounded-bl-md">
+        <div style={{height:(fileClicked) ? "25%" : "0", transition:"ease all 0.3s"}} className="w-[75%] left-[2.5%] home-gradient absolute bottom-[7.5%] flex flex-col justify-center items-center border rounded-br-none rounded-bl-md">
           <center onClick={()=>{setFileClicked(false)}} style={{display:(fileClicked) ? "block" : "none"}} className="rotate-180 h-[10%]"><p className="w-[2%] items-center justify-center text-white hover:cursor-pointer pl-[0.5em] pr-[0.5em] hover:scale-[103%] active:scale-100">^</p></center>
           <h3 style={{display:(fileClicked) ? "block" : "none"}} className="font-mono ml-[1em] text-white text-left w-full">{currentFile ? `${currentFile.name}:` : "no file selected"}</h3>
           <div style={{display:(fileClicked) ? "flex" : "none"}} className="w-full h-full flex items-center justify-start p-[1em]">
@@ -133,20 +209,20 @@ export const Dashboard = () => {
         <div className="w-full p-[5px] flex items-center justify-start flex-col h-[90%]">
           <h1 className="p-[0.5em] border w-full font-mono text-center mb-[1em] rounded-[5px] text-white">File Explorer</h1>
           <h3 className=" w-full text-left mb-[5px] text-white font-mono text-[10px]">My files:</h3>
-          <div className="w-full h-[25%] border rouned-md overflow-y-scroll">
+          <div className="w-full h-[25%] border rouned-md overflow-y-scroll overflow-x-hidden">
             {(userFiles) ? (userFiles.map((file, index) => (
-              (file['name'] !== ".emptyFolderPlaceholder") ? (<p key={index} onClick={()=>{setFileClicked(true), setCurrentFile(file)}} className="w-full bg-white file-home-gradient hover:cursor-pointer border h-[1em] mb-[5px] flex items-center text-[0.6em] font-mono justify-start p-[1em]">{file['name']}</p>) : null
+              (file['name'] !== ".emptyFolderPlaceholder") ? (<p key={index} onClick={()=>{setFileClicked(true), setCurrentFile(file)}} className="w-full bg-white max-[500px]:flex-wrap max-[500px]:h-auto  file-home-gradient hover:cursor-pointer border h-[1em] mb-[5px] flex items-center text-[0.6em] font-mono justify-between p-[1em]">{file['name']}<h1 className="font-mono font-extrabold text-red-800 pl-[5px] pr-[5px] rounded-[5px] bg-white hover:scale-105 flex items-center justify-center" onclick={() =>{etDeleteFileModal(true)}}>X</h1></p>) : null
             ))) :
             (<div className="w-full h-full flex items-center justify-center"><p className ="loader"></p></div>)
             }
             {/*<p className="w-full bg-white h-[1em] mb-[5px] flex items-center text-[0.8em] font-mono justify-start p-[1em]">Sample-file</p>*/}
           </div>
-          <MyImages name ="My Images:" ></MyImages>
+          <MyImages name ="My Images:" showPreview = {setPreview} displayImage={displayImage} imageNames={imageNames} folderNames={folderNames} paths={imagePaths} response={imageResponse}></MyImages>
           
         </div>
         
         {/* Choose A file */}
-        <div className="w-full h-[10%] rounded-br-md flex items-center justify-center">
+        <div className="w-full h-[10%] max-[500px]:text-[8px] max-[500px]:bg-green- rounded-br-md flex max-[500px]:flex-wrap items-center justify-center">
           <input 
             ref = {fileInput}
             onChange={(e)=>{
@@ -156,10 +232,11 @@ export const Dashboard = () => {
             uploadFile(file, userId)}} 
             type="file" 
             accept='.fits' 
-            className="w-[80%] text-white"></input>
+            className="w-[80%] text-white max-[500px]:w-[7.55em]"></input>
         </div>
       </div>
       {/* Hidden/Outside of dashboard */}
+      {(deleteFileModal) ? (<DeleteModal></DeleteModal>) : null}
       <p className="absolute top-[0.5em] left-[2em] p-[0.3em] rounded-md border text-white hover:scale-[103%] cursor-pointer active:scale-100" onClick={signOut}>SignOut</p>
       {(loading) ? 
       (<div className ="absolute flex flex-col items-center justify-center w-full h-full backdrop-blur-md">
