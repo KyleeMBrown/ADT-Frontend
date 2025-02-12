@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import supabase from '../supabaseClient'
 import axios from 'axios'
 import { MyImages } from '../Components/myImages'
-import { DeleteModal } from '../Components/DeleteModal'
+import { DeleteModal } from '../Components/deleteModal'
 
 
 const url = import.meta.env.VITE_API_URL;
@@ -42,6 +42,10 @@ export const Dashboard = () => {
   const [errorImage, setErrorImage] = useState("")
   const [loadImage, setLoadImage] = useState(false)
   const [deleteFileModal, setDeleteFileModal] = useState(false)
+  const [fileToDelete, setFileToDelete] = useState()
+  const [deleteModalType, setDeleteModalType] = useState()
+  const [imageToDelete, setImageToDelete]= useState();
+  const [imageToDeleteName, setImageToDeleteName] = useState();
   
   // AUTHENTICATE AND GRAB SESSION -- on page load
   useEffect(()=>{
@@ -190,7 +194,8 @@ export const Dashboard = () => {
           (<div className="flex flex-col justify-center align-center">
             {/*<center className="mb-[2em]"><a href={imgPath} target="_blank" className="file-home-gradient bg-white p-[0.5em] hover:text- text-[rgb(32,76,91)] border bg-transparent text-center w-[25%] ">Open</a></center>*/}
             <img src={imgPath}></img> 
-            
+            <br></br>
+            <button onClick={()=>{setImageToDelete(imgPath.split('user-storage/')[1].split('?')[0]), setImageToDeleteName(imgPath.split('images')[1].split('?')[0]), setDeleteFileModal(true), setDeleteModalType("image")}} className="p-[0.5em] bg-red-600 rounded-md hover:bg-red-800 text-white font-mono">Delete Image</button>
           </div>)
           : null}
         </div>
@@ -211,7 +216,7 @@ export const Dashboard = () => {
           <h3 className=" w-full text-left mb-[5px] text-white font-mono text-[10px]">My files:</h3>
           <div className="w-full h-[25%] border rouned-md overflow-y-scroll overflow-x-hidden">
             {(userFiles) ? (userFiles.map((file, index) => (
-              (file['name'] !== ".emptyFolderPlaceholder") ? (<div key={index} onClick={()=>{setFileClicked(true), setCurrentFile(file)}} className="w-full bg-white max-[500px]:flex-wrap max-[500px]:h-auto  file-home-gradient hover:cursor-pointer border h-[1em] mb-[5px] flex items-center text-[0.6em] font-mono justify-between p-[1em]">{file['name']}<p className="font-mono font-extrabold text-red-800 pl-[5px] pr-[5px] rounded-[5px] bg-white hover:scale-105 flex items-center justify-center" onClick={() =>{setDeleteFileModal(true)}}>X</p></div>) : null
+              (file['name'] !== ".emptyFolderPlaceholder") ? (<div key={index} onClick={()=>{setFileClicked(true), setCurrentFile(file)}} className="w-full bg-white max-[500px]:flex-wrap max-[500px]:h-auto  file-home-gradient hover:cursor-pointer border h-[1em] mb-[5px] flex items-center text-[0.6em] font-mono justify-between p-[1em]">{file['name']}<p className="font-mono font-extrabold text-red-800 pl-[5px] pr-[5px] rounded-[5px] bg-white hover:scale-105 flex items-center justify-center" onClick={() =>{setDeleteFileModal(true), setFileToDelete(file.name), setDeleteModalType("file")}}>X</p></div>) : null
             ))) :
             (<div className="w-full h-full flex items-center justify-center"><p className ="loader"></p></div>)
             }
@@ -236,7 +241,7 @@ export const Dashboard = () => {
         </div>
       </div>
       {/* Hidden/Outside of dashboard */}
-      {(deleteFileModal) ? (<DeleteModal></DeleteModal>) : null}
+      {(deleteFileModal) ? (<DeleteModal fileToDelete={fileToDelete} userId ={userId} setModal ={setDeleteFileModal} refreshFiles={getFiles} refreshImages={retrieveImages} resetCurrentFile={setCurrentFile} resetCurrentImage={displayImage} imagePath={imageToDelete}  imageName={imageToDeleteName} type={deleteModalType}></DeleteModal>) : null}
       <p className="absolute top-[0.5em] left-[2em] p-[0.3em] rounded-md border text-white hover:scale-[103%] cursor-pointer active:scale-100" onClick={signOut}>SignOut</p>
       {(loading) ? 
       (<div className ="absolute flex flex-col items-center justify-center w-full h-full backdrop-blur-md">
