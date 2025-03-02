@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import supabase from '../supabaseClient'
 import axios from 'axios'
 import { MyImages } from '../Components/MyImages'
-import { DeleteModal } from '../Components/deleteModal'
+import { DeleteModal } from '../Components/DeleteModal'
 
 
 const url = import.meta.env.VITE_API_URL;
