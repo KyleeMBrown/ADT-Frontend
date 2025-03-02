@@ -17,20 +17,15 @@ export const SignIn = () => {
     const sendSigninInfo = async(email, password) =>{
         try{
             if(email && password){
-                const { response, error } = await supabase.auth.signInWithPassword({
-                    email: email,
-                    password: password
+                const { response } = await supabase.auth.signInWithPassword({
+                    "email": email,
+                    "password": password
                 })
-                navigate('/dashboard')
+             
                 return response
             }else{
                 setErrorMessage("email and password required")
             }
-
-            console.log(response)
-            
-            
-            
         }catch(err){
             console.log(`message: ${err.response.data.error}`)
             const message = err.response.data.error
@@ -60,9 +55,14 @@ export const SignIn = () => {
     const handleSignIn = async() =>{
         try{
             const response = await sendSigninInfo(email, password)
-
+            
+            navigate('/dashboard') 
+            
+            
         }catch(err){
             console.log(`error signing in`)
+            //console.log(err)
+            
         }
     }
 

@@ -21,6 +21,8 @@ const url = import.meta.env.VITE_API_URL;
   }
 
 export const Dashboard = () => {
+  const Navigate = useNavigate();
+
   const fileInput = useRef()
   const nav = useNavigate()
   const [user, setUser] = useState()
@@ -47,6 +49,7 @@ export const Dashboard = () => {
   const [imageToDelete, setImageToDelete]= useState();
   const [imageToDeleteName, setImageToDeleteName] = useState();
   
+  const [deleteAcc, setDeleteAcc] = useState(false)
   // AUTHENTICATE AND GRAB SESSION -- on page load
   useEffect(()=>{
     const fetch = async() => {
@@ -181,13 +184,28 @@ export const Dashboard = () => {
     setShowPreview(true)
   }
   
+  // delete account
+
+  const deleteAccount = async() =>{
+    try{
+      console.log(userId)
+      const response = axios.delete(`${url}/user/delete-user/${userId}`)
+      if (response){
+        Navigate("/")
+      }
+    }catch(err){
+      
+      console.log(err, userId)
+    }
+    
+  }
   return (
     <div className="w-full h-full home-gradient flex items-center justify-center">
       {/* Dashboard */}
       <div className="w-[75%] h-[85%] p-[1em] border rounded-md rounded-tr-none rounded-br-none">
         <div className="w-full h-full gap-[1em] flex items-center justify-center">
           {paths && !showPreview ? paths.map((path, index) => (
-            <img className="w-[30%]" index ={index} src={path}></img>
+            <img className="w-[30%]" key ={index} src={path}></img>
           )) :<p className="text-red-600 font-bold font-mono">{errorImage}</p>}
           {loadImage ? (<div className="loader"></div>):null}
           {imgPath && showPreview ? 
@@ -243,6 +261,9 @@ export const Dashboard = () => {
       {/* Hidden/Outside of dashboard */}
       {(deleteFileModal) ? (<DeleteModal fileToDelete={fileToDelete} userId ={userId} setModal ={setDeleteFileModal} refreshFiles={getFiles} refreshImages={retrieveImages} resetCurrentFile={setCurrentFile} resetCurrentImage={displayImage} imagePath={imageToDelete}  imageName={imageToDeleteName} type={deleteModalType}></DeleteModal>) : null}
       <p className="absolute top-[0.5em] left-[2em] p-[0.3em] rounded-md border text-white hover:scale-[103%] cursor-pointer active:scale-100" onClick={signOut}>SignOut</p>
+      <p onClick={()=>{setDeleteAcc(true)}} className="absolute bottom-[0.5em] left-[2em] p-[0.5em] rounded-md border bg-red-600 text-white hover:scale-[103%] cursor-pointer active:scale-100" >Delete Account</p>
+
+     {deleteAcc ? <div className="absolute bg-[#18161696] gap-[1.5em] w-full h-full text-white backdrop-blur-xl flex items-center flex-col justify-center"><p>are you sure you want to DELETE your account?</p><p className=' italic '>This is permanent</p><div className="flex justify-center items-center gap-[1em]"><a onClick={deleteAccount} className="bg-green-600 rounded-[5px] cursor-pointer p-[0.3em] w-[3em] text-center">Yes</a><a onClick={()=>{setDeleteAcc(false)}} className="bg-gray-600 rounded-[5px] cursor-pointer p-[0.3em] w-[3em] text-center">No</a></div></div> : null}
       {(loading) ? 
       (<div className ="absolute flex flex-col items-center justify-center w-full h-full backdrop-blur-md">
           <p className="loader h-[1em]"></p>

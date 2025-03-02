@@ -39,7 +39,10 @@ export const SignUp =() => {
           password:password
         })
         console.log(data)
-        nav('/signin')
+        if (data){
+          nav('/signin')
+        }
+        
         //setSuccessMess(`Sign Up Successful! - Check ${email} for your verification link`)
       }else{
         console.log("error")
