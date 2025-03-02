@@ -2,7 +2,7 @@ import {React, useState, useEffect, useRef} from 'react'
 import { useNavigate } from 'react-router-dom'
 import supabase from '../supabaseClient'
 import axios from 'axios'
-import { MyImages } from '../Components/myImages'
+import { MyImages } from '../Components/MyImages'
 import { DeleteModal } from '../Components/deleteModal'
 
 

@@ -1,4 +1,4 @@
-import {React, useEffect, useState} from 'react'
+import {React} from 'react'
 
 export let MyImages = ({name, imageNames, folderNames, paths, response, displayImage, showPreview}) => {
 
