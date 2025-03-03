@@ -50,7 +50,7 @@ useEffect(()=>{
                   (<div key={index} className="w-full hover:bg-white hover:text-black mb-[0.5em] h-[auto] border flex justify-evenly items-center">
                     <p className="text-[0.65em] ">{note.version}</p>
                     <p className="text-[0.65em]">{note.title}</p>
-                    <div className="w-[25%] flex justify-center items-center pt-[0.2em] h-[2em] overflow-x-hidden overflow-y-scroll">
+                    <div className="w-[25%] flex justify-start items-center pt-[0.2em] h-[2em] overflow-x-hidden overflow-y-scroll">
                       <p className="text-[0.65em]">{note.description}</p>
                     </div>
                     <p className="text-[0.65em]">{note.created_at}</p>
