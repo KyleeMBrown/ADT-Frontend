@@ -1,7 +1,7 @@
 import {React, useState} from 'react'
 import Input from '../Components/SignUp/Input';
 //import axios from 'axios'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import supabase from '../supabaseClient'
 
 //const url = import.meta.env.VITE_API_URL;
@@ -80,7 +80,7 @@ export const SignIn = () => {
             <button onClick={handleAnonSignIn} className="text-white p-[0.5em] rounded-[5px] bg-transparent border hover:scale-105 active:scale-100">Sign in <span className="italic">anonymously</span> </button>
             </div>
             <br></br>
-            <a className="text-white underline hover:cursor-pointer text-center" onClick={()=>{navigate("/signup")}}>Don't have an account? <br></br>sign Up here</a>
+            <Link to="/signup" className="text-white underline hover:cursor-pointer text-center">Don't have an account? <br></br>sign Up here</Link>
             <br></br>
             <p className='text-red-500 font-mono text-[0.8em] mb-[0.5em] text-center'>{errorMessage}</p>
             

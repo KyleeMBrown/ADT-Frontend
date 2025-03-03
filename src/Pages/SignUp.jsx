@@ -1,5 +1,5 @@
 import {React, useState} from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Input from '../Components/SignUp/Input'
 import axios from 'axios';
 
@@ -83,7 +83,7 @@ export const SignUp =() => {
             
             <button onClick={signUp} className="text-white p-[0.5em] rounded-[5px] bg-transparent border">SignUp</button>
             <br></br>
-            <a href="/signin/" className="text-center underline text-white">Already have an account?<br></br>signin</a>
+            <Link to="/signin" className="text-center underline text-white">Already have an account?<br></br>signin</Link>
             <br></br>
             <p className='text-red-600 font-mono p-[0.5em]'>{userExistsMessage}</p>
             <p className='text-green-600 font-mono text-[0.8em] text-center pb-[0.5em]'>{successMess}</p>
