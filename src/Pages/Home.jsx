@@ -80,7 +80,7 @@ useEffect(()=>{
        
         <div className="flex max-[760px]:text-[0.75em] items-center justify-center"> 
                   <img className="w-[10%] max-[760px]:w-[11%]" src="/Images/icons8-email-52.png"></img>
-                  <p className="ml-[0.5em] underline">azickur2@illinois.edu</p>
+                  <p className="ml-[0.5em] max-[760px]:text-[8px] underline">azickur2@illinois.edu</p>
         </div>
         {/* End Links */}
        </div>
@@ -97,7 +97,7 @@ useEffect(()=>{
        
         <div className="flex max-[760px]:text-[0.75em] items-center justify-center"> 
                   <img className="w-[10%] max-[760px]:w-[10%]" src="/Images/icons8-email-52.png"></img>
-                  <p className="ml-[0.5em] underline">kyleebrown.work@gmail.com</p>
+                  <p className="ml-[0.5em] max-[760px]:text-[8px] underline">kyleebrown.work@gmail.com</p>
         </div>
         {/* End Links */}
        </div>
