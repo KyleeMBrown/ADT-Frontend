@@ -55,7 +55,7 @@ useEffect(()=>{
                     </div>
                     <p className="text-[0.65em]">{note.created_at}</p>
                   </div>)
-                )) : null}
+                )) : (<div className="w-full h-full flex items-center justify-center"><div className="loader"></div></div>)}
               </div>
           </div>
         </div>
