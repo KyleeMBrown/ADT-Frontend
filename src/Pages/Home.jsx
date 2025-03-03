@@ -5,6 +5,7 @@ import axios from 'axios';
 export const Home = () => {
 
 const [patchNotes, setPatchNotes] = useState();
+const [popupTip, setPopUpTip] = useState(true)
 
 const url = import.meta.env.VITE_API_URL;
 
@@ -102,8 +103,24 @@ useEffect(()=>{
         {/* End Links */}
        </div>
        </div>
+      
       </div>
-      <div></div>
+       {/* Popup */}
+       {popupTip ? 
+       (<div className="absolute top-0 w-full backdrop-blur-sm h-full flex items-center justify-center">
+        <div className="w-[35%] max-[760px]:w-[70%] h-[auto] flex flex-col items-enter justify-center p-[1em] bg-white rounded-[5px]">
+          <h2 className='max-[760px]:text-[15px] text-center underline text-[1.2em]'>Quick Message</h2>
+          <br></br>
+          <p className="text-red-600 max-[760px]:text-[12px]">Since ADT is in Beta, the web app may go to sleep when not many requests have been made</p>
+          <br></br>
+          <p className="max-[760px]:text-[12px]">Please be patient, a tip is once the patch notes have loaded your <span className="text-green-600">good</span> to sign up, sign in, etc.</p>
+          <br></br>
+          <p className="max-[760px]:text-[12px] italic">- Thank you!</p>
+          <p className="max-[760px]:text-[12px] italic">Developers</p>
+          <br></br>
+          <button onClick={()=>{setPopUpTip(false)}} className="w-full bg-gray-500 p-[0.5em] text-white rounded-[5px]">Close</button>
+        </div> 
+      </div>):null}
     </div>
   )
 }

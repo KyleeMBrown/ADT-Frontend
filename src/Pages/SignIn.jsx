@@ -55,9 +55,9 @@ export const SignIn = () => {
     const handleSignIn = async() =>{
         try{
             const response = await sendSigninInfo(email, password)
-            
-            navigate('/dashboard') 
-            
+            if (response){
+                navigate('/dashboard') 
+            }
             
         }catch(err){
             console.log(`error signing in`)
