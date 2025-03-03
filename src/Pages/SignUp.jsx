@@ -88,6 +88,7 @@ export const SignUp =() => {
             <p className='text-red-600 font-mono p-[0.5em]'>{userExistsMessage}</p>
             <p className='text-green-600 font-mono text-[0.8em] text-center pb-[0.5em]'>{successMess}</p>
         </div>
+        <Link to="/" className="p-[0.5em] absolute top-[2em] left-[2em] text-white home-gradient rounded-[5px]">Home</Link>
     </div>
   )
 }

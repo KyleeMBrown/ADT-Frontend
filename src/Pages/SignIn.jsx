@@ -85,7 +85,7 @@ export const SignIn = () => {
             <p className='text-red-500 font-mono text-[0.8em] mb-[0.5em] text-center'>{errorMessage}</p>
             
             
-            
+            <Link to="/" className="p-[0.5em] absolute top-[2em] left-[2em] text-white home-gradient rounded-[5px]">Home</Link>
         </div>
     </div>
   )
