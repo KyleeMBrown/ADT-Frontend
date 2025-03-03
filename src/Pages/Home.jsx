@@ -67,7 +67,7 @@ useEffect(()=>{
         </div>
        <div className="h-[40%] flex text-white flex-col border ">
        <h1 className="text-[1.2em]  p-[1em]">About the Authors</h1>
-       <div className="w-full pl-[2em] h-[8em] border flex items-center justify-around">
+       <div className="w-full pl-[2em] max-[580px]:mr-[8em] h-[8em] border flex items-center justify-around">
         <p className=" max-[760px]:text-[0.75em]">* Austin</p>
          {/* LinkedIn */}
          <a href="https://www.linkedin.com/in/austin-zickur-8b13a8292/" target="_blank">
@@ -84,7 +84,7 @@ useEffect(()=>{
         </div>
         {/* End Links */}
        </div>
-       <div className="w-full pl-[2em] h-[8em] border flex items-center justify-around">
+       <div className="w-full pl-[2em] max-[580px]:mr-[8em] h-[8em] border flex items-center justify-around">
         <p className=" max-[760px]:text-[0.65em]" >* Kylee</p>
         {/* LinkedIn */}
         <a href="https://www.linkedin.com/in/kylee-brown-7167b9274/" target="_blank">
